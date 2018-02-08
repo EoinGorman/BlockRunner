@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.games.gorlami.blockrunner.states.mainMenu.view.mainMenuView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/main_menu"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ccc"
-        android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_menu_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    android:orientation="horizontal">
 
-    <com.games.gorlami.blockrunner.states.mainMenu.view.startGameButton
-        android:id="@+id/start_game_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </com.games.gorlami.blockrunner.states.mainMenu.view.startGameButton>
-
-</com.games.gorlami.blockrunner.states.mainMenu.view.mainMenuView>
+</LinearLayout>

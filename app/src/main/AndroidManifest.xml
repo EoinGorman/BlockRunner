@@ -10,13 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.games.gorlami.blockrunner.states.mainMenu.view.mainMenuActivity">
+        <activity android:name="com.games.gorlami.blockrunner.states.mainMenu.mainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name="com.games.gorlami.blockrunner.states.game.gameActivity">
         </activity>
     </application>
 
