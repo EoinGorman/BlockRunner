@@ -11,6 +11,6 @@ import com.games.gorlami.blockrunner.states.mainMenu.view.mvcMainMenuView;
 /**
  * Presenter for the main menu screen.
  */
-public interface mainMenuPresenter extends mvcMainMenuView.GameStartListener{
+public interface mainMenuPresenter extends mvcMainMenuView.MainMenuListener{
 
 }

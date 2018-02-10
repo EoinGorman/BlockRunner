@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.games.gorlami.blockrunner.R;
 
@@ -18,12 +19,22 @@ import com.games.gorlami.blockrunner.R;
 public class mvcMainMenuViewImpl implements mvcMainMenuView {
 
     private View mRootView;
-    private GameStartListener mListener;
+    private MainMenuListener mListener;
+    private Button startButton;
 
     public mvcMainMenuViewImpl(LayoutInflater inflater, ViewGroup container) {
         mRootView = inflater.inflate(R.layout.main_menu_layout, container, false);
         initialize();
+
         mRootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onBackgroundClicked();
+                }
+            }
+        });
+        startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mListener != null) {
@@ -34,7 +45,7 @@ public class mvcMainMenuViewImpl implements mvcMainMenuView {
     }
 
     private void initialize() {
-        //get UI references here from mRootView.findViewById(R.id.###);
+        startButton = mRootView.findViewById(R.id.button);
     }
 
     @Override
@@ -43,7 +54,7 @@ public class mvcMainMenuViewImpl implements mvcMainMenuView {
     }
 
     @Override
-    public void setListener(GameStartListener listenerInstance) {
+    public void setListener(MainMenuListener listenerInstance) {
         mListener = listenerInstance;
     }
 

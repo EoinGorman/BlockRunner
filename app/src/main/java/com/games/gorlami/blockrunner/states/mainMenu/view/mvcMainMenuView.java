@@ -5,15 +5,18 @@
  */
 package com.games.gorlami.blockrunner.states.mainMenu.view;
 
+import common.mvcView;
+
 /**
  * Custom view for mainMenuActivity.
  */
 public interface mvcMainMenuView extends mvcView {
 
-    interface GameStartListener {
+    interface MainMenuListener {
         void onGameStartButtonClicked();
+        void onBackgroundClicked();
     }
 
+    void setListener(MainMenuListener listenerInstance);
     void setBackgroundColor(int funkyNewStyle);
-    void setListener(GameStartListener listenerInstance);
 }

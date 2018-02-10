@@ -12,7 +12,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
-import com.games.gorlami.blockrunner.R;
+import com.games.gorlami.blockrunner.states.game.gameActivity;
 import com.games.gorlami.blockrunner.states.mainMenu.view.mvcMainMenuView;
 import com.games.gorlami.blockrunner.states.mainMenu.view.mvcMainMenuViewImpl;
 
@@ -65,6 +65,12 @@ public final class mainMenuActivity extends Activity implements mainMenuPresente
 
     @Override
     public void onGameStartButtonClicked() {
+        Intent intent = new Intent(this, gameActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onBackgroundClicked() {
         Random rand = new Random();
         mvcView.setBackgroundColor(Color.argb(255, rand.nextInt(256),
                 rand.nextInt(256), rand.nextInt(256)));

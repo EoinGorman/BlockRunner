@@ -1,4 +1,4 @@
-package com.games.gorlami.blockrunner.states.mainMenu.view;
+package common;
 
 import android.os.Bundle;
 import android.view.View;
