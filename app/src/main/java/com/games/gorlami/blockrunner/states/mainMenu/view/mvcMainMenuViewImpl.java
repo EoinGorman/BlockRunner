@@ -7,6 +7,7 @@ package com.games.gorlami.blockrunner.states.mainMenu.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -26,14 +27,16 @@ public class mvcMainMenuViewImpl implements mvcMainMenuView {
         mRootView = inflater.inflate(R.layout.main_menu_layout, container, false);
         initialize();
 
-        mRootView.setOnClickListener(new View.OnClickListener() {
+        mRootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onTouch(View v, MotionEvent event) {
                 if (mListener != null) {
-                    mListener.onBackgroundClicked();
+                    return mListener.onBackgroundTouched(v, event);
                 }
+                return false;
             }
         });
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

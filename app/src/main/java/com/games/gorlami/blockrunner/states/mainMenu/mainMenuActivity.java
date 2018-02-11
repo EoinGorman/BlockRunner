@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.games.gorlami.blockrunner.states.game.gameActivity;
 import com.games.gorlami.blockrunner.states.mainMenu.view.mvcMainMenuView;
@@ -70,9 +72,22 @@ public final class mainMenuActivity extends Activity implements mainMenuPresente
     }
 
     @Override
-    public void onBackgroundClicked() {
-        Random rand = new Random();
-        mvcView.setBackgroundColor(Color.argb(255, rand.nextInt(256),
-                rand.nextInt(256), rand.nextInt(256)));
+    public boolean onBackgroundTouched(View view, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_MOVE) {
+            Random rand = new Random();
+            mvcView.setBackgroundColor(Color.argb(255, rand.nextInt(256),
+                    rand.nextInt(256), rand.nextInt(256)));
+        }
+        else if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            mvcView.setBackgroundColor(Color.RED);
+            return true;
+        }
+        else if(event.getAction() == MotionEvent.ACTION_UP) {
+            mvcView.setBackgroundColor(Color.BLUE);
+        }
+        else if(event.getAction() == MotionEvent.ACTION_CANCEL) {
+            mvcView.setBackgroundColor(Color.BLACK);
+        }
+        return false;
     }
 }

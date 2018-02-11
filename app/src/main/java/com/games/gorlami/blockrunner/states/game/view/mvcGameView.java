@@ -1,5 +1,8 @@
 package com.games.gorlami.blockrunner.states.game.view;
 
+import android.view.MotionEvent;
+import android.view.View;
+
 import common.mvcView;
 
 /**
@@ -7,10 +10,9 @@ import common.mvcView;
  */
 public interface mvcGameView extends mvcView {
     interface GameListener {
-        void onScreenClicked();
+        boolean onScreenTouched(View view, MotionEvent event);
     }
 
     void setListener(GameListener listenerInstance);
-    void playerSpriteJump();
     void incrementScoreUi();
 }

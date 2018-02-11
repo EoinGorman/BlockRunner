@@ -7,6 +7,7 @@ package com.games.gorlami.blockrunner.states.game.view;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,12 +27,13 @@ public class mvcGameViewImpl implements mvcGameView {
         mRootView = inflater.inflate(R.layout.game_layout, container, false);
         initialize();
 
-        mRootView.setOnClickListener(new View.OnClickListener() {
+        mRootView.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onTouch(View v, MotionEvent event) {
                 if (mListener != null) {
-                    mListener.onScreenClicked();
+                    return mListener.onScreenTouched(v, event);
                 }
+                return false;
             }
         });
 
@@ -39,11 +41,6 @@ public class mvcGameViewImpl implements mvcGameView {
 
     private void initialize() {
         scoreCounter = mRootView.findViewById(R.id.score_counter);
-    }
-
-    @Override
-    public void playerSpriteJump() {
-        //Make sprite animate up/down
     }
 
     @Override

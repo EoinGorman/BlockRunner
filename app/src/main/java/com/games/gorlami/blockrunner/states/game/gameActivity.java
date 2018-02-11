@@ -9,6 +9,8 @@ package com.games.gorlami.blockrunner.states.game;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.games.gorlami.blockrunner.states.game.view.mvcGameView;
 import com.games.gorlami.blockrunner.states.game.view.mvcGameViewImpl;
@@ -59,7 +61,10 @@ public final class gameActivity extends Activity implements gamePresenter {
     }
 
     @Override
-    public void onScreenClicked() {
-        mvcView.incrementScoreUi();
+    public boolean onScreenTouched(View view, MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            mvcView.incrementScoreUi();
+        }
+        return false;
     }
 }

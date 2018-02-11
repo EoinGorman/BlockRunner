@@ -10,13 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.games.gorlami.blockrunner.states.mainMenu.mainMenuActivity">
+        <activity android:name="com.games.gorlami.blockrunner.states.mainMenu.mainMenuActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.games.gorlami.blockrunner.states.game.gameActivity">
+        <activity android:name="com.games.gorlami.blockrunner.states.game.gameActivity"
+            android:screenOrientation="landscape">
         </activity>
     </application>
 
