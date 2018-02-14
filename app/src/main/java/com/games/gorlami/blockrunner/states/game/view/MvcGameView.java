@@ -18,7 +18,7 @@ public interface MvcGameView extends MvcView {
     }
 
     interface DrawListener {
-        List<Sprite> getSpriteList();
+        List<Sprite> getSpriteListCopy();
     }
 
     void drawOnNextUpdate(List<Sprite> spriteList);

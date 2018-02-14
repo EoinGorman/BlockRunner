@@ -2,17 +2,19 @@ package com.games.gorlami.blockrunner.states.game.view;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 
 import com.games.gorlami.blockrunner.states.game.gameObjects.Sprite;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Custom game view to which we draw Sprite objects.
  */
 public class GameCanvas extends View {
+    private final AtomicBoolean drawing = new AtomicBoolean(false);
     private MvcGameView.DrawListener drawListener;
 
     public GameCanvas(Context context) {
@@ -31,19 +33,27 @@ public class GameCanvas extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    public boolean isDrawing() {
+        return drawing.get();
+    }
+
+    public void setDrawing(boolean value) {
+        drawing.set(value);
+    }
+
     public void setOnDrawListener(MvcGameView.DrawListener newDrawListener) {
         drawListener = newDrawListener;
     }
 
     @Override
-    synchronized public void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         //Draw all our sprites
-        if(drawListener != null) {
-            for(Sprite sprite : drawListener.getSpriteList()) {
-                Rect dest = new Rect((int)sprite.getPosition().x, (int)sprite.getPosition().y, (int)sprite.getPosition().x + sprite.getBmp().getWidth(), (int)sprite.getPosition().y + sprite.getBmp().getHeight());
-                canvas.drawBitmap(sprite.getBmp(), null, dest, null);
+        if (drawListener != null) {
+            for (Sprite sprite : drawListener.getSpriteListCopy()) {
+                canvas.drawBitmap(sprite.getBmp(), null, sprite.getDestRect(), null);
             }
         }
+        drawing.set(false);
     }
 }

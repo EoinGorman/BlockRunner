@@ -58,13 +58,16 @@ public class MvcGameViewImpl implements MvcGameView, MvcGameView.DrawListener {
 
     @Override
     public void drawOnNextUpdate(List<Sprite> sprite) {
-        spriteList.clear();
-        spriteList.addAll(sprite);
-        gameCanvas.invalidate();
+        if(!gameCanvas.isDrawing()) {
+            gameCanvas.setDrawing(true);
+            spriteList.clear();
+            spriteList.addAll(sprite);
+            gameCanvas.postInvalidate();
+        }
     }
 
     @Override
-    public List<Sprite> getSpriteList() {
+    public List<Sprite> getSpriteListCopy() {
         return spriteList;
     }
 

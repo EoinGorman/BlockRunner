@@ -27,6 +27,11 @@ public class Vector2D {
         this.y = (float)y;
     }
 
+    public Vector2D(Vector2D other) {
+        x = other.x;
+        y = other.y;
+    }
+
     public Vector2D getAddResult(Vector2D other) {
         return new Vector2D(x + other.x, y + other.y);
     }
