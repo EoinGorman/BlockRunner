@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.games.gorlami.blockrunner.R;
+import com.games.gorlami.blockrunner.states.game.gameObjects.Player;
 import com.games.gorlami.blockrunner.states.game.gameObjects.Sprite;
 import com.games.gorlami.blockrunner.states.game.view.MvcGameView;
 import com.games.gorlami.blockrunner.states.game.view.MvcGameViewImpl;
@@ -20,6 +21,7 @@ import com.games.gorlami.blockrunner.states.game.view.MvcGameViewImpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Constants;
 import common.Vector2D;
 
 /**
@@ -28,7 +30,7 @@ import common.Vector2D;
 public final class GameActivity extends Activity implements GamePresenter {
     private List<Sprite> sprites;
     private MvcGameView mvcView;
-    private Sprite testSprite;
+    private Player player;
     private Thread gameThread;
     private GameLoop gameLoop;
 
@@ -41,6 +43,10 @@ public final class GameActivity extends Activity implements GamePresenter {
         mvcView.setGameListener(this);
         setContentView(mvcView.getRootView());
 
+        //Create and position a sprite
+        player = new Player(getResources(), R.drawable.test, new Vector2D(250, Constants.Game.FLOOR_HEIGHT));
+        sprites.add(player.getSprite());
+
         gameThread = new Thread(gameLoop);
         gameThread.start();
     }
@@ -48,9 +54,6 @@ public final class GameActivity extends Activity implements GamePresenter {
     @Override
     protected void onStart() {
         super.onStart();
-        //Create and position a sprite
-        testSprite = new Sprite(getResources(), R.drawable.test, new Vector2D(50,50), 0);
-        sprites.add(testSprite);
     }
 
     @Override
@@ -87,7 +90,7 @@ public final class GameActivity extends Activity implements GamePresenter {
     @Override
     public boolean onScreenTouched(View view, MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            mvcView.incrementScoreUi();
+            player.Jump();
             return true;
         }
         return false;
@@ -95,13 +98,7 @@ public final class GameActivity extends Activity implements GamePresenter {
 
     @Override
     public void Update(float deltaTime) {
-        if(!sprites.isEmpty()) {
-            Vector2D pos = sprites.get(0).getPosition();
-
-            Vector2D moveVec = new Vector2D(20.0f, 20.0f).getScaleResult(deltaTime);
-            pos = pos.getAddResult(moveVec);
-            sprites.get(0).setPosition(pos);
-        }
+        player.Update(deltaTime);
     }
 
     @Override
