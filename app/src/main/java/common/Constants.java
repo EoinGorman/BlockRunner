@@ -13,6 +13,10 @@ public final class Constants {
 
     public static class Game{
         public final static float FLOOR_HEIGHT = 500.0f;
+        public enum ObjectTypes {
+            GROUND,
+            PLAYER
+        }
         private Game() {};
     }
 }

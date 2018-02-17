@@ -1,15 +1,18 @@
 package com.games.gorlami.blockrunner.states.game.gameObjects;
 
 import android.content.res.Resources;
+import android.graphics.RectF;
 
+import common.Collidable;
 import common.Constants;
 import common.Vector2D;
 
 /**
  * Class representing the player.
  */
-public final class Player {
+public final class Player implements Collidable {
     private static final float JUMP_POWER = -50.0f;
+    private boolean canJump;
     private Sprite sprite;
     private Vector2D position;
     private Vector2D velocity;
@@ -22,23 +25,19 @@ public final class Player {
     }
 
     public synchronized void Update(float deltaTime) {
-        //Apply gravity if above floor
-        if(position.y < Constants.Game.FLOOR_HEIGHT) {
+        //Apply gravity if off ground
+        if(!canJump) {
             velocity = velocity.getAddResult(Constants.Physics.GRAVITY.getScaleResult(deltaTime));
-            position = position.getAddResult(velocity.getScaleResult(deltaTime));
-            if(position.y > Constants.Game.FLOOR_HEIGHT) {
-                velocity.y = 0;
-                position = new Vector2D(position.x, Constants.Game.FLOOR_HEIGHT);
-            }
         }
-        else {
-            position = position.getAddResult(velocity.getScaleResult(deltaTime));
-        }
+        position = position.getAddResult(velocity.getScaleResult(deltaTime));
         sprite.setPosition(position);
     }
 
     public synchronized void Jump() {
-        velocity = velocity.getAddResult(new Vector2D(0,JUMP_POWER));
+        if (canJump) {
+            canJump = false;
+            velocity.y = JUMP_POWER;
+        }
     }
 
     public final Vector2D getVelocity() {
@@ -51,5 +50,25 @@ public final class Player {
 
     public final Sprite getSprite() {
         return sprite;
+    }
+
+    @Override
+    public void onCollide(Collidable other) {
+        if(other.getObjectType() == Constants.Game.ObjectTypes.GROUND) {
+            //Player has hit the ground
+            position.y = other.getBounds().top - 1;
+            velocity.y = 0;
+            canJump = true;
+        }
+    }
+
+    @Override
+    public RectF getBounds() {
+        return sprite.getDestRect();
+    }
+
+    @Override
+    public Constants.Game.ObjectTypes getObjectType() {
+        return Constants.Game.ObjectTypes.PLAYER;
     }
 }
