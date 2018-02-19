@@ -17,10 +17,6 @@ public interface MvcGameView extends MvcView {
         boolean onScreenTouched(View view, MotionEvent event);
     }
 
-    interface DrawListener {
-        List<Sprite> getSpriteListCopy();
-    }
-
     void drawOnNextUpdate(List<Sprite> spriteList);
     void setGameListener(GameListener listenerInstance);
     void incrementScoreUi();

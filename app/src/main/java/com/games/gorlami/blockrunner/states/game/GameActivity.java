@@ -31,6 +31,8 @@ import common.Vector2D;
  * Activity that represents the game screen.
  */
 public final class GameActivity extends Activity implements GamePresenter {
+    private static Vector2D SCREEN_CENTER;
+    private InputHandler inputHandler;
     private CollisionHandler collisionHandler;
     private List<Sprite> sprites;
     private MvcGameView mvcView;
@@ -43,13 +45,17 @@ public final class GameActivity extends Activity implements GamePresenter {
         super.onCreate(savedInstanceState);
         gameLoop = new GameLoop(this);
         sprites = new ArrayList<>();
+        inputHandler = new InputHandler();
         collisionHandler = new CollisionHandler();
         mvcView = new MvcGameViewImpl(LayoutInflater.from(this), null);
         mvcView.setGameListener(this);
         setContentView(mvcView.getRootView());
+        SCREEN_CENTER = new Vector2D(getResources().getDisplayMetrics().widthPixels / 2, getResources().getDisplayMetrics().heightPixels / 2);
 
         //Anonymous Collidable class representing the game "Ground"
         Collidable ground = new Collidable() {
+            private RectF bounds = new RectF(0, (SCREEN_CENTER.y * 2) - Constants.Game.FLOOR_HEIGHT_FROM_BOTTOM,
+                    SCREEN_CENTER.x * 2, SCREEN_CENTER.y * 4);
             @Override
             public void onCollide(Collidable other) {
                 //Do nothing
@@ -57,8 +63,7 @@ public final class GameActivity extends Activity implements GamePresenter {
 
             @Override
             public RectF getBounds() {
-                return new RectF(0, Constants.Game.FLOOR_HEIGHT,
-                        getResources().getDisplayMetrics().widthPixels, getResources().getDisplayMetrics().heightPixels);
+                return bounds;
             }
 
             @Override
@@ -68,7 +73,7 @@ public final class GameActivity extends Activity implements GamePresenter {
         };
 
         //Create and position a sprite
-        player = new Player(getResources(), R.drawable.test, new Vector2D(250, Constants.Game.FLOOR_HEIGHT));
+        player = new Player(getResources(), R.drawable.test, new Vector2D(SCREEN_CENTER.x, ground.getBounds().top));
 
         sprites.add(player.getSprite());
         collisionHandler.checkOnNextUpdate(player);
@@ -116,17 +121,20 @@ public final class GameActivity extends Activity implements GamePresenter {
 
     @Override
     public boolean onScreenTouched(View view, MotionEvent event) {
-        if(event.getAction() == MotionEvent.ACTION_DOWN) {
-            player.Jump();
-            return true;
-        }
+        inputHandler.addToQueue(event);
         return false;
     }
 
     @Override
     public void Update(float deltaTime) {
-        //todo add some kind of InputHandler that will deal with touches etc. in the main thread.
-        player.Update(deltaTime);
+        synchronized (inputHandler) {
+            while(!inputHandler.getAllTouches().isEmpty()) {
+                if(inputHandler.getLastTouch().getAction() == MotionEvent.ACTION_DOWN) {
+                    player.jump();
+                }
+            }
+        }
+        player.update(deltaTime);
         collisionHandler.checkCollisions();
     }
 

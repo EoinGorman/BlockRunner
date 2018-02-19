@@ -11,29 +11,33 @@ import common.Vector2D;
  * Class representing the player.
  */
 public final class Player implements Collidable {
-    private static final float JUMP_POWER = -50.0f;
+    private static final float JUMP_POWER = -75.0f;
     private boolean canJump;
     private Sprite sprite;
     private Vector2D position;
     private Vector2D velocity;
     private float speed;
 
-    public Player (Resources resources, int resourceId, Vector2D pos) {
-        position = pos;
+    private Player() {
         velocity = new Vector2D(0,0);
+    }
+
+    public Player (Resources resources, int resourceId, Vector2D pos) {
+        this();
+        position = pos;
         sprite = new Sprite(resources, resourceId, pos, 0);
     }
 
-    public synchronized void Update(float deltaTime) {
-        //Apply gravity if off ground
+    public void update(float deltaTime) {
         if(!canJump) {
-            velocity = velocity.getAddResult(Constants.Physics.GRAVITY.getScaleResult(deltaTime));
+            velocity = velocity.getAddResult(
+                    Constants.Physics.GRAVITY.getScaleResult(deltaTime * Constants.Physics.SCALE));
         }
-        position = position.getAddResult(velocity.getScaleResult(deltaTime));
+        position = position.getAddResult(velocity.getScaleResult(deltaTime * Constants.Physics.SCALE));
         sprite.setPosition(position);
     }
 
-    public synchronized void Jump() {
+    public void jump() {
         if (canJump) {
             canJump = false;
             velocity.y = JUMP_POWER;
@@ -56,9 +60,12 @@ public final class Player implements Collidable {
     public void onCollide(Collidable other) {
         if(other.getObjectType() == Constants.Game.ObjectTypes.GROUND) {
             //Player has hit the ground
-            position.y = other.getBounds().top - 1;
-            velocity.y = 0;
-            canJump = true;
+            if(sprite.getDestRect().bottom > other.getBounds().top) {
+                position.y = other.getBounds().top - (sprite.getHeight() /2);
+                sprite.setPosition(position);
+                velocity.y = 0;
+                canJump = true;
+            }
         }
     }
 

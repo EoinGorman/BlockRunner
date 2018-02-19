@@ -21,12 +21,11 @@ import java.util.List;
 /**
  * Custom view for GameActivity.
  */
-public class MvcGameViewImpl implements MvcGameView, MvcGameView.DrawListener {
+public class MvcGameViewImpl implements MvcGameView {
     private View mRootView;
     private GameCanvas gameCanvas;
     private GameListener mListener;
     private TextView scoreCounter;
-    private final List<Sprite> spriteList = new ArrayList<>();
 
     public MvcGameViewImpl(LayoutInflater inflater, ViewGroup container) {
         mRootView = inflater.inflate(R.layout.game_layout, container, false);
@@ -46,7 +45,6 @@ public class MvcGameViewImpl implements MvcGameView, MvcGameView.DrawListener {
     private void initialize() {
         scoreCounter = mRootView.findViewById(R.id.score_counter);
         gameCanvas = mRootView.findViewById(R.id.game_canvas);
-        gameCanvas.setOnDrawListener(this);
     }
 
     @Override
@@ -57,18 +55,12 @@ public class MvcGameViewImpl implements MvcGameView, MvcGameView.DrawListener {
     }
 
     @Override
-    public void drawOnNextUpdate(List<Sprite> sprite) {
+    public void drawOnNextUpdate(List<Sprite> sprites) {
         if(!gameCanvas.isDrawing()) {
             gameCanvas.setDrawing(true);
-            spriteList.clear();
-            spriteList.addAll(sprite);
+            gameCanvas.setSpritesToDraw(sprites);
             gameCanvas.postInvalidate();
         }
-    }
-
-    @Override
-    public List<Sprite> getSpriteListCopy() {
-        return spriteList;
     }
 
     @Override
