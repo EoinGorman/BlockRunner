@@ -82,7 +82,7 @@ public final class GameActivity extends Activity implements GamePresenter {
         sprites.add(testBox.getSprite());
         collisionHandler.attach(player);
         collisionHandler.attach(ground);
-        //collisionHandler.attach(testBox);
+        collisionHandler.attach(testBox);
 
         gameThread = new Thread(gameLoop);
         gameThread.start();

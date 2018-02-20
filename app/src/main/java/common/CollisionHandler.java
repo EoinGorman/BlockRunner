@@ -32,6 +32,6 @@ public class CollisionHandler {
 
     //todo overload "colliding" function to take other shapes.
     private boolean colliding(RectF object, RectF other) {
-        return object.intersect(other);
+        return RectF.intersects(object, other);
     }
 }
