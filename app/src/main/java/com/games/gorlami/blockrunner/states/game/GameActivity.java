@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.games.gorlami.blockrunner.R;
+import com.games.gorlami.blockrunner.states.game.gameObjects.Obstacle;
 import com.games.gorlami.blockrunner.states.game.gameObjects.Player;
 import com.games.gorlami.blockrunner.states.game.gameObjects.Sprite;
 import com.games.gorlami.blockrunner.states.game.view.MvcGameView;
@@ -32,11 +33,12 @@ import common.Vector2D;
  */
 public final class GameActivity extends Activity implements GamePresenter {
     private static Vector2D SCREEN_CENTER;
-    private InputHandler inputHandler;
+    private InputBuffer inputBuffer;
     private CollisionHandler collisionHandler;
     private List<Sprite> sprites;
     private MvcGameView mvcView;
     private Player player;
+    private Obstacle testBox;
     private Thread gameThread;
     private GameLoop gameLoop;
 
@@ -45,7 +47,7 @@ public final class GameActivity extends Activity implements GamePresenter {
         super.onCreate(savedInstanceState);
         gameLoop = new GameLoop(this);
         sprites = new ArrayList<>();
-        inputHandler = new InputHandler();
+        inputBuffer = new InputBuffer();
         collisionHandler = new CollisionHandler();
         mvcView = new MvcGameViewImpl(LayoutInflater.from(this), null);
         mvcView.setGameListener(this);
@@ -73,11 +75,14 @@ public final class GameActivity extends Activity implements GamePresenter {
         };
 
         //Create and position a sprite
-        player = new Player(getResources(), R.drawable.test, new Vector2D(SCREEN_CENTER.x, ground.getBounds().top));
+        player = new Player(getResources(), R.drawable.test, new Vector2D(SCREEN_CENTER.x, ground.getBounds().top - (100/2)));
+        testBox = new Obstacle(getResources(), R.drawable.box, new Vector2D((SCREEN_CENTER.x * 2 + 150), ground.getBounds().top - (100/2)), new Vector2D(-1,0));
 
         sprites.add(player.getSprite());
-        collisionHandler.checkOnNextUpdate(player);
-        collisionHandler.checkOnNextUpdate(ground);
+        sprites.add(testBox.getSprite());
+        collisionHandler.attach(player);
+        collisionHandler.attach(ground);
+        //collisionHandler.attach(testBox);
 
         gameThread = new Thread(gameLoop);
         gameThread.start();
@@ -121,25 +126,30 @@ public final class GameActivity extends Activity implements GamePresenter {
 
     @Override
     public boolean onScreenTouched(View view, MotionEvent event) {
-        inputHandler.addToQueue(event);
+        inputBuffer.addToQueue(event);
         return false;
     }
 
     @Override
     public void Update(float deltaTime) {
-        synchronized (inputHandler) {
-            while(!inputHandler.getAllTouches().isEmpty()) {
-                if(inputHandler.getLastTouch().getAction() == MotionEvent.ACTION_DOWN) {
-                    player.jump();
-                }
-            }
-        }
+        handleInputs();
         player.update(deltaTime);
+        testBox.update(deltaTime);
         collisionHandler.checkCollisions();
     }
 
     @Override
     public void Draw() {
         mvcView.drawOnNextUpdate(sprites);
+    }
+
+    private void handleInputs() {
+        synchronized (inputBuffer) {
+            while(!inputBuffer.getAllTouches().isEmpty()) {
+                if(inputBuffer.getLastTouch().getAction() == MotionEvent.ACTION_DOWN) {
+                    player.jump();
+                }
+            }
+        }
     }
 }

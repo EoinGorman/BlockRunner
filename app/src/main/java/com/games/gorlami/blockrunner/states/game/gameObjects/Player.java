@@ -12,7 +12,7 @@ import common.Vector2D;
  */
 public final class Player implements Collidable {
     private static final float JUMP_POWER = -75.0f;
-    private boolean canJump;
+    private boolean onGround;
     private Sprite sprite;
     private Vector2D position;
     private Vector2D velocity;
@@ -25,11 +25,11 @@ public final class Player implements Collidable {
     public Player (Resources resources, int resourceId, Vector2D pos) {
         this();
         position = pos;
-        sprite = new Sprite(resources, resourceId, pos, 0);
+        sprite = new Sprite(resources, resourceId, position, 0);
     }
 
     public void update(float deltaTime) {
-        if(!canJump) {
+        if(!onGround) {
             velocity = velocity.getAddResult(
                     Constants.Physics.GRAVITY.getScaleResult(deltaTime * Constants.Physics.SCALE));
         }
@@ -38,8 +38,8 @@ public final class Player implements Collidable {
     }
 
     public void jump() {
-        if (canJump) {
-            canJump = false;
+        if (onGround) {
+            onGround = false;
             velocity.y = JUMP_POWER;
         }
     }
@@ -64,7 +64,7 @@ public final class Player implements Collidable {
                 position.y = other.getBounds().top - (sprite.getHeight() /2);
                 sprite.setPosition(position);
                 velocity.y = 0;
-                canJump = true;
+                onGround = true;
             }
         }
     }

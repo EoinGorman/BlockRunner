@@ -16,7 +16,8 @@ public final class Constants {
         public final static float FLOOR_HEIGHT_FROM_BOTTOM = 100.0f;
         public enum ObjectTypes {
             GROUND,
-            PLAYER
+            PLAYER,
+            OBSTACLE
         }
         private Game() {};
     }

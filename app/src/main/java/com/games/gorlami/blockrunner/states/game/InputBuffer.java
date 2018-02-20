@@ -7,10 +7,10 @@ import java.util.Stack;
 /**
  * Class to store inputs to be handled in game thread later.
  */
-public class InputHandler {
+public class InputBuffer {
     private Stack<MotionEvent> touchStack;
 
-    public InputHandler() {
+    public InputBuffer() {
         touchStack = new Stack<>();
     }
 

@@ -15,15 +15,16 @@ public class CollisionHandler {
         objectsToCheck = new ArrayList<>();
     }
 
-    public void checkOnNextUpdate(Collidable object) {
+    public void attach(Collidable object) {
         objectsToCheck.add(object);
     }
 
     public void checkCollisions() {
-        for (int i = 0; i < objectsToCheck.size(); i++) {
+        for (int i = 0; i < objectsToCheck.size() - 1; i++) {
             for (int j = (i + 1); j < objectsToCheck.size(); j++) {
                 if (colliding(objectsToCheck.get(i).getBounds(),objectsToCheck.get(j).getBounds())) {
                     objectsToCheck.get(i).onCollide(objectsToCheck.get(j));
+                    objectsToCheck.get(j).onCollide(objectsToCheck.get(i));
                 }
             }
         }
