@@ -127,7 +127,7 @@ public final class GameActivity extends Activity implements GamePresenter {
     @Override
     public boolean onScreenTouched(View view, MotionEvent event) {
         inputBuffer.addToQueue(event);
-        return false;
+        return true;
     }
 
     @Override
@@ -146,8 +146,12 @@ public final class GameActivity extends Activity implements GamePresenter {
     private void handleInputs() {
         synchronized (inputBuffer) {
             while(!inputBuffer.getAllTouches().isEmpty()) {
-                if(inputBuffer.getLastTouch().getAction() == MotionEvent.ACTION_DOWN) {
+                MotionEvent lastTouch = inputBuffer.getLastTouch();
+                if(lastTouch.getAction() == MotionEvent.ACTION_DOWN) {
                     player.jump();
+                }
+                else if(lastTouch.getAction() == MotionEvent.ACTION_UP) {
+                    player.endJump();
                 }
             }
         }
