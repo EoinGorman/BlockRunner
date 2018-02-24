@@ -7,6 +7,6 @@ import com.games.gorlami.blockrunner.states.game.view.MvcGameView;
  */
 
 interface GamePresenter extends MvcGameView.GameListener {
-    void Update(float deltaTime);
-    void Draw();
+    void update(float deltaTime);
+    void draw();
 }

@@ -27,12 +27,12 @@ public final class GameLoop implements Runnable {
     @Override
     public void run() {
         while (running) {
-            //Update game logic as quickly as possible
+            //update game logic as quickly as possible
             lastUpdateTime = currentTime;
             currentTime = System.currentTimeMillis();
             deltaTime = (currentTime - lastUpdateTime) / ONE_SECOND_IN_MILLISECONDS;
-            game.Update(deltaTime);
-            game.Draw();
+            game.update(deltaTime);
+            game.draw();
         }
     }
 }

@@ -1,7 +1,8 @@
 package com.games.gorlami.blockrunner.states.game.gameObjects;
 
-import android.content.res.Resources;
 import android.graphics.RectF;
+
+import com.games.gorlami.blockrunner.states.ResourceLoader;
 
 import common.Collidable;
 import common.Constants;
@@ -16,11 +17,11 @@ public class Obstacle implements Collidable {
     private Vector2D velocity;
     private float speed;
 
-    public Obstacle(Resources resources, int resourceId, Vector2D pos, Vector2D startingVelocity) {
+    public Obstacle(Vector2D pos, Vector2D startingVelocity) {
         speed = 10;
         position = pos;
         velocity = startingVelocity;
-        sprite = new Sprite(resources, resourceId, position, 0);
+        sprite = new Sprite(ResourceLoader.BOX_BITMAP, position, 0);
     }
 
     public void update(float deltaTime) {

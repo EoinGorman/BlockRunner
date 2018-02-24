@@ -1,8 +1,8 @@
 package com.games.gorlami.blockrunner.states.game.gameObjects;
 
-import android.content.res.Resources;
 import android.graphics.RectF;
-import android.util.Log;
+
+import com.games.gorlami.blockrunner.states.ResourceLoader;
 
 import common.Collidable;
 import common.Constants;
@@ -25,10 +25,10 @@ public final class Player implements Collidable {
         velocity = new Vector2D(0,0);
     }
 
-    public Player (Resources resources, int resourceId, Vector2D pos) {
+    public Player (Vector2D pos) {
         this();
         position = pos;
-        sprite = new Sprite(resources, resourceId, position, 0);
+        sprite = new Sprite(ResourceLoader.PLAYER_BITMAP, position, 0);
     }
 
     public void update(float deltaTime) {

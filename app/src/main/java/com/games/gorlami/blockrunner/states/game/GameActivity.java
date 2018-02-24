@@ -13,7 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.games.gorlami.blockrunner.R;
+import com.games.gorlami.blockrunner.states.ResourceLoader;
 import com.games.gorlami.blockrunner.states.game.gameObjects.Obstacle;
 import com.games.gorlami.blockrunner.states.game.gameObjects.Player;
 import com.games.gorlami.blockrunner.states.game.gameObjects.Sprite;
@@ -53,6 +53,7 @@ public final class GameActivity extends Activity implements GamePresenter {
         mvcView.setGameListener(this);
         setContentView(mvcView.getRootView());
         SCREEN_CENTER = new Vector2D(getResources().getDisplayMetrics().widthPixels / 2, getResources().getDisplayMetrics().heightPixels / 2);
+        ResourceLoader.loadResources(getResources());
 
         //Anonymous Collidable class representing the game "Ground"
         Collidable ground = new Collidable() {
@@ -75,8 +76,8 @@ public final class GameActivity extends Activity implements GamePresenter {
         };
 
         //Create and position a sprite
-        player = new Player(getResources(), R.drawable.test, new Vector2D(SCREEN_CENTER.x, ground.getBounds().top - (100/2)));
-        testBox = new Obstacle(getResources(), R.drawable.box, new Vector2D((SCREEN_CENTER.x * 2 + 150), ground.getBounds().top - (100/2)), new Vector2D(-1,0));
+        player = new Player(new Vector2D(SCREEN_CENTER.x, ground.getBounds().top - (100/2)));
+        testBox = new Obstacle(new Vector2D((SCREEN_CENTER.x * 2 + 150), ground.getBounds().top - (100/2)), new Vector2D(-1,0));
 
         sprites.add(player.getSprite());
         sprites.add(testBox.getSprite());
@@ -131,7 +132,7 @@ public final class GameActivity extends Activity implements GamePresenter {
     }
 
     @Override
-    public void Update(float deltaTime) {
+    public void update(float deltaTime) {
         handleInputs();
         player.update(deltaTime);
         testBox.update(deltaTime);
@@ -139,7 +140,7 @@ public final class GameActivity extends Activity implements GamePresenter {
     }
 
     @Override
-    public void Draw() {
+    public void draw() {
         mvcView.drawOnNextUpdate(sprites);
     }
 

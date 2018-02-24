@@ -32,9 +32,9 @@ public class Sprite {
         height = other.getHeight();
     }
 
-    public Sprite(Resources resources, int resourceId, Vector2D pos, int layerDepth) {
+    public Sprite(Bitmap bitmap, Vector2D pos, int layerDepth) {
         this();
-        bmp = BitmapFactory.decodeResource(resources, resourceId);
+        bmp = bitmap;
         depth = layerDepth;
         width = bmp.getWidth();
         height = bmp.getHeight();

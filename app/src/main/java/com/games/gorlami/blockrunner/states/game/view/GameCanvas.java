@@ -53,7 +53,7 @@ public class GameCanvas extends View {
 
     @Override
     public void onDraw(Canvas canvas) {
-        //Draw all our sprites
+        //draw all our sprites
         for(int i = 0; i < spritesToDraw.size(); i++) {
             canvas.drawBitmap(spritesToDraw.get(i).getBmp(), null, spritesToDraw.get(i).getDestRect(), null);
         }

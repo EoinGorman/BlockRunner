@@ -19,6 +19,10 @@ public class CollisionHandler {
         objectsToCheck.add(object);
     }
 
+    public void attach(List<Collidable> objects) {
+        objectsToCheck.addAll(objects);
+    }
+
     public void checkCollisions() {
         for (int i = 0; i < objectsToCheck.size() - 1; i++) {
             for (int j = (i + 1); j < objectsToCheck.size(); j++) {
