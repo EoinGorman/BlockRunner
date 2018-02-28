@@ -8,7 +8,7 @@ public final class Constants {
 
     public static class Physics{
         public final static Vector2D GRAVITY = new Vector2D(0,9.84f);
-        public final static float SCALE = 15;
+        public final static float SCALE = 17;
         private Physics() {};
     }
 

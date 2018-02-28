@@ -19,7 +19,7 @@ public class CollisionHandler {
         objectsToCheck.add(object);
     }
 
-    public void attach(List<Collidable> objects) {
+    public void attach(List<? extends Collidable> objects) {
         objectsToCheck.addAll(objects);
     }
 

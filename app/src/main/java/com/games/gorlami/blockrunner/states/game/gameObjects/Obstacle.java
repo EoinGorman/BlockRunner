@@ -33,6 +33,14 @@ public class Obstacle implements Collidable {
         return sprite;
     }
 
+    public final Vector2D getPosition() {
+        return position;
+    }
+
+    public final Vector2D getVelocity() {
+        return velocity;
+    }
+
     @Override
     public void onCollide(Collidable other) {
         //Doesn't do anything fun.

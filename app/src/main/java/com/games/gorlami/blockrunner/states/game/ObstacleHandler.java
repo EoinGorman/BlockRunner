@@ -1,6 +1,7 @@
 package com.games.gorlami.blockrunner.states.game;
 
 import com.games.gorlami.blockrunner.states.game.gameObjects.Obstacle;
+import com.games.gorlami.blockrunner.states.game.gameObjects.Sprite;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,16 +18,13 @@ public class ObstacleHandler {
         DOUBLE_STACK
     }
     private Vector2D originPosition;
-    private Vector2D abovePosition;
-    private Vector2D behindPosition;
     private Vector2D startingVelocity;
     private List<Obstacle> obstacles;
+    private List<Sprite> sprites;
     private ObstacleFactory obstacleFactory;
 
     public ObstacleHandler(Vector2D originPos){
         originPosition = originPos;
-        abovePosition = new Vector2D(originPos.x, originPos.y); //todo better solution for getting/setting possible formation positions
-        behindPosition = new Vector2D(originPos.x, originPos.y);
         startingVelocity = new Vector2D(-1,0);
         obstacles = new ArrayList<>();
         obstacleFactory = new ObstacleFactory();
@@ -38,27 +36,34 @@ public class ObstacleHandler {
         }
     }
 
-    public void spawnNewWave(FORMATION formation){
+    public ArrayList<Obstacle> spawnNewWave(FORMATION formation){
         //pass difficulty
         //randomly pick new FORMATION between 0-difficulty
         //allows this to select formation based on difficulty coming from game
         //consider expanding obstacleFactory to include different obstacles for different formations
+        ArrayList<Obstacle> newObstacles = new ArrayList<>();
         switch (formation){
             case SINGLE:
-                obstacles.add(obstacleFactory.createObstacle(originPosition, startingVelocity));
+                newObstacles.add(obstacleFactory.createObstacle(originPosition, startingVelocity));
                 break;
             case DOUBLE:
-                obstacles.add(obstacleFactory.createObstacle(originPosition, startingVelocity));
-                obstacles.add(obstacleFactory.createObstacle(behindPosition, startingVelocity));
+                newObstacles.add(obstacleFactory.createObstacle(originPosition, startingVelocity));
+                newObstacles.add(obstacleFactory.createObstacleInFormation(newObstacles.get(newObstacles.size()-1),
+                                                                            ObstacleFactory.RELATIVE_POSITION.BEHIND));
                 break;
             case DOUBLE_STACK:
-                obstacles.add(obstacleFactory.createObstacle(originPosition, startingVelocity));
-                obstacles.add(obstacleFactory.createObstacle(abovePosition, startingVelocity));
+                newObstacles.add(obstacleFactory.createObstacle(originPosition, startingVelocity));
+                newObstacles.add(obstacleFactory.createObstacleInFormation(newObstacles.get(newObstacles.size()-1),
+                                                                            ObstacleFactory.RELATIVE_POSITION.ABOVE));
                 break;
         }
+        obstacles.addAll(newObstacles);
+        return newObstacles;
     }
 
     public final List<Obstacle> getObstacles() {
         return obstacles;
     }
+
+    public final List<Sprite> getSprites() { return sprites; }
 }

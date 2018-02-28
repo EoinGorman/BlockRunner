@@ -35,6 +35,7 @@ public final class GameActivity extends Activity implements GamePresenter {
     private static Vector2D SCREEN_CENTER;
     private InputBuffer inputBuffer;
     private CollisionHandler collisionHandler;
+    private ObstacleHandler obstacleHandler;
     private List<Sprite> sprites;
     private MvcGameView mvcView;
     private Player player;
@@ -77,13 +78,17 @@ public final class GameActivity extends Activity implements GamePresenter {
 
         //Create and position a sprite
         player = new Player(new Vector2D(SCREEN_CENTER.x, ground.getBounds().top - (100/2)));
-        testBox = new Obstacle(new Vector2D((SCREEN_CENTER.x * 2 + 150), ground.getBounds().top - (100/2)), new Vector2D(-1,0));
+        obstacleHandler = new ObstacleHandler(new Vector2D((SCREEN_CENTER.x * 2 + 150), ground.getBounds().top - (100/2)));
+        ArrayList<Obstacle> obstacles = obstacleHandler.spawnNewWave(ObstacleHandler.FORMATION.DOUBLE);
 
         sprites.add(player.getSprite());
-        sprites.add(testBox.getSprite());
+        for (Obstacle obstacle : obstacles) {
+            sprites.add(obstacle.getSprite());
+        }
+
         collisionHandler.attach(player);
         collisionHandler.attach(ground);
-        collisionHandler.attach(testBox);
+        collisionHandler.attach(obstacles);
 
         gameThread = new Thread(gameLoop);
         gameThread.start();
@@ -135,7 +140,7 @@ public final class GameActivity extends Activity implements GamePresenter {
     public void update(float deltaTime) {
         handleInputs();
         player.update(deltaTime);
-        testBox.update(deltaTime);
+        obstacleHandler.update(deltaTime);
         collisionHandler.checkCollisions();
     }
 
